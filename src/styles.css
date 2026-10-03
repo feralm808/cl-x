@@ -4,11 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system — cl6zy profile card (noche Roblox).
- * Tokens en oklch. Tema único oscuro.
- */
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -119,7 +114,7 @@
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
-  padding: 5rem 1.25rem 6rem;
+  padding: 4rem 1.25rem 8rem;
 }
 
 @utility glass-nav {
@@ -274,36 +269,30 @@
 @keyframes page-enter-3d {
   0% {
     opacity: 0;
-    filter: blur(8px);
-    transform: perspective(1200px) translateY(28px) rotateX(12deg) scale(0.94);
-  }
-  55% {
-    opacity: 1;
-    filter: blur(0);
+    transform: perspective(1400px) translateY(40px) rotateX(8deg) scale(0.97);
   }
   100% {
     opacity: 1;
-    filter: blur(0);
-    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
+    transform: perspective(1400px) translateY(0) rotateX(0deg) scale(1);
   }
 }
 
 @utility page-stage {
   perspective: 1400px;
-  perspective-origin: 50% 20%;
+  perspective-origin: 50% 0%;
   transform-style: preserve-3d;
+  overflow: visible;
 }
 
 @utility animate-page-enter {
   transform-origin: center top;
   backface-visibility: hidden;
-  will-change: transform, opacity, filter;
-  animation: page-enter-3d 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+  animation: page-enter-3d 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-page-enter {
     animation: none;
-    filter: none;
   }
 }

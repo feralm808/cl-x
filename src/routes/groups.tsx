@@ -32,7 +32,10 @@ export const Route = createFileRoute("/groups")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(groupsQueryOptions()),
+  // Prefetch sin bloquear la navegación (evita que se vea la página anterior)
+  loader: ({ context }) => {
+    void context.queryClient.ensureQueryData(groupsQueryOptions());
+  },
   component: GroupsPage,
 });
 
