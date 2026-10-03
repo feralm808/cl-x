@@ -84,9 +84,9 @@ function Index() {
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-glow via-glow to-cyan-glow opacity-70 blur-md" />
             <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface">
               <img
-                src={avatarImg}
-                alt="Avatar de cl6zy"
-                className="h-full w-full scale-110 object-cover object-top"
+                src={avatarSrc}
+                alt="Avatar de Roblox de cl6zy"
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
