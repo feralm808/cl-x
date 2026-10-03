@@ -64,7 +64,7 @@ const CREATORS: CreatorProfile[] = [
     robloxUsername: "maxplis123",
     bio: "Creador de contenido de Roblox, creciendo cada dia mas",
     tiktokUsername: "mazzi1nky",
-    discordHandle: "@mazzi1nky",
+    discordHandle: "",
     role: "Creador de Contenido",
     tags: ["Contenido"],
   },
@@ -75,7 +75,7 @@ const CREATORS: CreatorProfile[] = [
     robloxUsername: "cwtusagi",
     bio: "Creadora de contenido y outfits de Roblox.",
     tiktokUsername: "cwtusagi",
-    discordHandle: "@cwtusagi",
+    discordHandle: "",
     role: "Creadora de Contenido",
     tags: ["Contenido", "Creadora de Outfits"],
   },
@@ -160,26 +160,26 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
 
   return (
     <section
-      className="glass-card relative w-full rounded-lg p-7 shadow-card sm:p-8"
+      className="glass-card relative w-full rounded-lg p-5 shadow-card sm:p-6"
       aria-label={`Perfil de ${creator.displayName}`}
     >
       <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-glow/60 to-transparent" />
 
       <div className="flex justify-center">
-        <span className="badge-role inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em]">
+        <span className="badge-role inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]">
           <Sparkles className="h-3.5 w-3.5" />
           {creator.role}
         </span>
       </div>
 
-      <div className="mt-7 flex justify-center">
+      <div className="mt-5 flex justify-center">
         <div className="relative">
           <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-glow via-glow to-cyan-glow opacity-70 blur-md" />
           <a
             href={robloxProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface transition duration-300 hover:scale-105 hover:border-glow/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-glow"
+            className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface transition duration-300 hover:scale-105 hover:border-glow/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-glow"
             aria-label={`Ver perfil de Roblox de ${creator.robloxUsername}`}
             title={`Perfil de Roblox · ${creator.robloxUsername}`}
           >
@@ -196,14 +196,14 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
               <div className="h-full w-full animate-pulse bg-surface" />
             )}
           </a>
-          <div className="pointer-events-none absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
-            <BadgeCheck className="h-5 w-5 text-primary-foreground" />
+          <div className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
+            <BadgeCheck className="h-3.5 w-3.5 text-primary-foreground" />
           </div>
         </div>
       </div>
 
-      <div className="mt-5 text-center">
-        <h2 className="font-display text-4xl font-bold tracking-tight text-foreground">
+      <div className="mt-3 text-center">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           {creator.displayName}
         </h2>
         <p className="mt-1.5 inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -220,11 +220,11 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
         </p>
       </div>
 
-      <p className="mt-5 text-center text-[15px] leading-relaxed text-muted-foreground">
+      <p className="mt-3 text-center text-sm leading-relaxed text-muted-foreground">
         {creator.bio}
       </p>
 
-      <div className="mt-5 flex flex-wrap justify-center gap-2">
+      <div className="mt-3 flex flex-wrap justify-center gap-2">
         {creator.tags.map((tag) => (
           <span
             key={tag}
@@ -235,23 +235,27 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
         ))}
       </div>
 
-      <div className="mt-7 rounded-3xl border border-edge bg-surface/60 p-5 backdrop-blur-sm">
+      <div className="mt-4 rounded-2xl border border-edge bg-surface/60 p-4 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               Seguidores totales
             </p>
-            <p className="mt-1 font-display text-3xl font-bold tabular-nums text-foreground">
+            <p className="mt-1 font-display text-2xl font-bold tabular-nums text-foreground">
               {followerCount.toLocaleString("en-US")}
             </p>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-glow/20 to-violet-glow/20 text-glow">
-            <Users className="h-6 w-6" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-glow/20 to-violet-glow/20 text-glow">
+            <Users className="h-5 w-5" />
           </div>
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-2.5">
+      <div
+        className={`mt-4 grid gap-2 ${
+          creator.discordHandle ? "grid-cols-2" : "grid-cols-1"
+        }`}
+      >
         <a
           href={`https://www.tiktok.com/@${creator.tiktokUsername}`}
           target="_blank"
@@ -265,16 +269,18 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
           </span>
         </a>
 
-        <div
-          className="btn-social cursor-default select-text"
-          aria-label={`Discord: ${creator.discordHandle}`}
-        >
-          <DiscordIcon className="h-4 w-4 shrink-0 text-[#8b93a7]" />
-          <span className="btn-social-text">
-            <span className="btn-social-label">Discord</span>
-            <span className="btn-social-handle">{creator.discordHandle}</span>
-          </span>
-        </div>
+        {creator.discordHandle ? (
+          <div
+            className="btn-social cursor-default select-text"
+            aria-label={`Discord: ${creator.discordHandle}`}
+          >
+            <DiscordIcon className="h-4 w-4 shrink-0 text-[#8b93a7]" />
+            <span className="btn-social-text">
+              <span className="btn-social-label">Discord</span>
+              <span className="btn-social-handle">{creator.discordHandle}</span>
+            </span>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -282,18 +288,18 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
 
 function Index() {
   return (
-    <main className="page-shell space-y-12">
+    <main className="page-shell space-y-8">
       <section className="max-w-3xl">
         <p className="section-kicker">Bienvenido a CL-X</p>
-        <h1 className="mt-4 font-display text-5xl font-bold leading-[1.08] text-foreground sm:text-6xl">
+        <h1 className="mt-3 font-display text-4xl font-bold leading-[1.08] text-foreground sm:text-5xl">
           Una comunidad unida de creadores de contenido de Roblox
         </h1>
-        <p className="mt-6 text-lg leading-8 text-muted-foreground">
+        <p className="mt-4 text-base leading-7 text-muted-foreground sm:text-lg">
           Compartimos ideas, creamos experiencias y crecemos juntos dentro del mundo de Roblox.
         </p>
       </section>
 
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-6 xl:gap-8">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
         {CREATORS.map((creator) => (
           <ProfileCard key={creator.id} creator={creator} />
         ))}

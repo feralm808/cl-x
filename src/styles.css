@@ -79,10 +79,15 @@
     border-color: var(--color-border);
   }
 
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
@@ -114,7 +119,7 @@
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
-  padding: 4rem 1.25rem 8rem;
+  padding: 3.5rem 1.25rem 5rem;
 }
 
 @utility glass-nav {
@@ -269,7 +274,7 @@
 @keyframes page-enter-3d {
   0% {
     opacity: 0;
-    transform: perspective(1400px) translateY(40px) rotateX(8deg) scale(0.97);
+    transform: perspective(1400px) translateY(16px) rotateX(5deg) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -281,14 +286,14 @@
   perspective: 1400px;
   perspective-origin: 50% 0%;
   transform-style: preserve-3d;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 @utility animate-page-enter {
   transform-origin: center top;
   backface-visibility: hidden;
-  will-change: transform, opacity;
-  animation: page-enter-3d 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-enter-3d 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
