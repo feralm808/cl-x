@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -128,6 +129,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -155,7 +157,7 @@ function RootComponent() {
           </nav>
         </header>
 
-        <div className="relative z-10">
+        <div key={pathname} className="relative z-10 animate-page-enter">
           <Outlet />
         </div>
       </div>

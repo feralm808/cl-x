@@ -78,9 +78,9 @@
   --edge: oklch(1 0 0 / 10%);
 
   /* Acentos de brillo: azul / violeta / celeste */
-  --glow: oklch(0.623 0.214 259.815);      /* azul #3b82f6 */
-  --violet-glow: oklch(0.606 0.25 292.717); /* violeta #8b5cf6 */
-  --cyan-glow: oklch(0.789 0.154 211.53);   /* celeste #22d3ee */
+  --glow: oklch(0.623 0.214 259.815);
+  --violet-glow: oklch(0.606 0.25 292.717);
+  --cyan-glow: oklch(0.789 0.154 211.53);
 }
 
 @layer base {
@@ -97,7 +97,6 @@
 
 /* ---------- Componentes del sistema de diseño ---------- */
 
-/* Tarjeta glassmorphism con gradiente translúcido y desenfoque */
 @utility glass-card {
   background: linear-gradient(
     160deg,
@@ -124,7 +123,7 @@
 
 @utility page-shell {
   width: 100%;
-  max-width: 72rem;
+  max-width: 80rem;
   margin-inline: auto;
   padding: 5rem 1.25rem 6rem;
 }
@@ -170,7 +169,6 @@
   text-transform: uppercase;
 }
 
-/* Insignia "Creador de Contenido" — degradado violeta/azulado */
 @utility badge-role {
   color: oklch(0.955 0.008 250);
   background: linear-gradient(
@@ -185,7 +183,6 @@
     inset 0 1px 0 oklch(1 0 0 / 25%);
 }
 
-/* Chip de habilidad */
 @utility chip {
   color: var(--color-foreground);
   background: oklch(1 0 0 / 6%);
@@ -193,14 +190,15 @@
   backdrop-filter: blur(8px);
 }
 
-/* Botones / bloque social */
 @utility btn-social {
   display: flex;
+  min-width: 0;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
+  overflow: hidden;
   border-radius: 1rem;
-  padding: 0.8rem 1rem;
-  font-size: 0.875rem;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.8125rem;
   color: var(--color-foreground);
   background: linear-gradient(
     150deg,
@@ -218,7 +216,30 @@
   }
 }
 
-/* ---------- Animaciones ---------- */
+@utility btn-social-text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.05rem;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+@utility btn-social-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+@utility btn-social-handle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
 
 @keyframes blob-float {
   0%,
@@ -254,4 +275,25 @@
 
 @utility animate-blob-slow {
   animation: blob-float 20s ease-in-out infinite reverse;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-page-enter {
+  animation: page-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-enter {
+    animation: none;
+  }
 }
