@@ -38,6 +38,7 @@ export const Route = createFileRoute("/groups")({
 
 function GroupsPage() {
   const { data: groups, isError } = useQuery(groupsQueryOptions());
+  const visibleGroups = groups ?? [];
 
   return (
     <main className="page-shell">
@@ -52,7 +53,7 @@ function GroupsPage() {
       </header>
 
       <section className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="Grupos de Roblox">
-        {groups.map((group) => (
+        {visibleGroups.map((group) => (
           <a
             key={group.id}
             href={group.robloxUrl}
