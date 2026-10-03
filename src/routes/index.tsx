@@ -65,14 +65,27 @@ function Index() {
   // Avatar de Roblox en vivo: se actualiza automáticamente cada 15 minutos
   const { data: avatar } = useQuery({
     queryKey: ["roblox-avatar"],
-    queryFn: () => getRobloxAvatar(),
+    queryFn: async () => {
+      const r = await getRobloxAvatar();
+      if (!r.imageUrl) throw new Error("avatar no disponible");
+      return r;
+    },
+    retry: 5,
+    retryDelay: (n) => Math.min(2000 * 2 ** n, 30000),
     refetchInterval: 15 * 60 * 1000,
     staleTime: 15 * 60 * 1000,
   });
 
+  const [cachedAvatar, setCachedAvatar] = useState<string | null>(null);
+  const [broken, setBroken] = useState(false);
+  useEffect(() => {
+    setCachedAvatar(getCachedAvatar());
+  }, []);
+
   // Guarda la última foto que cargó bien para usarla de respaldo
   useEffect(() => {
     if (avatar?.imageUrl) {
+      setBroken(false);
       try {
         window.localStorage.setItem(AVATAR_CACHE_KEY, avatar.imageUrl);
       } catch {
@@ -81,7 +94,7 @@ function Index() {
     }
   }, [avatar?.imageUrl]);
 
-  const avatarSrc = avatar?.imageUrl ?? getCachedAvatar() ?? avatarImg;
+  const avatarSrc = (!broken && avatar?.imageUrl) || cachedAvatar || null;
 
   // Seguidores de TikTok automáticos: se actualizan cada 24 horas
   const { data: tiktok } = useQuery({
@@ -117,11 +130,18 @@ function Index() {
           <div className="relative">
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-glow via-glow to-cyan-glow opacity-70 blur-md" />
             <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface">
-              <img
-                src={avatarSrc}
-                alt="Avatar de Roblox de cl6zy"
-                className="h-full w-full object-cover"
-              />
+              {avatarSrc ? (
+                <img
+                  src={avatarSrc}
+                  alt="Avatar de Roblox de cl6zy"
+                  className="h-full w-full object-cover"
+                  onError={() => {
+                    if (cachedAvatar && avatarSrc !== cachedAvatar) setBroken(true);
+                  }}
+                />
+              ) : (
+                <div className="h-full w-full animate-pulse bg-surface" />
+              )}
             </div>
             <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
               <BadgeCheck className="h-5 w-5 text-primary-foreground" />
