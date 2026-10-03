@@ -314,7 +314,23 @@
   }
 }
 
-@utility avatar-3d-panel {
-  animation: page-enter-3d 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-  pointer-events: auto;
+@keyframes avatar-idle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@utility avatar-idle-float {
+  animation: avatar-idle-float 2.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-idle-float {
+    animation: none;
+  }
 }
