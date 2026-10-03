@@ -151,7 +151,7 @@ function Index() {
         {/* Nombre de usuario / Roblox ID */}
         <div className="mt-5 text-center">
           <h1 className="font-display text-4xl font-bold tracking-tight text-foreground">
-            cl6zy
+            classix
           </h1>
           <p className="mt-1.5 inline-flex items-center gap-2 text-sm text-muted-foreground">
             <Gamepad2 className="h-4 w-4 text-glow" />
