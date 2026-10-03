@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Clapperboard, Users } from "lucide-react";
 import { getRobloxAvatar, getRobloxUser } from "@/lib/roblox.functions";
@@ -183,16 +183,58 @@ function useTikTokFollowers(username: string) {
   return tiktok?.followers ?? fallback;
 }
 
+function Avatar3DPreview({ userId, username }: { userId: string; username: string }) {
+  const src = `https://roembed.com/avatar/${userId}?bg=transparent&anim=float&floor=0&drag=1&zoom=0`;
+
+  return (
+    <div className="avatar-3d-panel absolute left-1/2 top-full z-30 mt-3 w-[min(100%,18rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-edge bg-background/95 shadow-card backdrop-blur-xl">
+      <div className="relative aspect-[3/4] w-full">
+        <iframe
+          title={`Avatar 3D de ${username}`}
+          src={src}
+          className="absolute inset-0 h-full w-full border-0"
+          loading="lazy"
+          allow="fullscreen"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+      <p className="border-t border-edge px-3 py-2 text-center text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        Vista 3D · idle
+      </p>
+    </div>
+  );
+}
+
 function ProfileCard({ creator }: { creator: CreatorProfile }) {
   const { avatarSrc, cachedAvatar, setBroken } = useRobloxAvatar(creator.robloxUserId);
   const displayName = useRobloxDisplayName(creator.robloxUserId, creator.displayName);
   const followerCount = useTikTokFollowers(creator.tiktokUsername);
   const robloxProfileUrl = `https://www.roblox.com/users/${creator.robloxUserId}/profile`;
 
+  const [show3d, setShow3d] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const open3d = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setShow3d(true), 280);
+  };
+  const close3d = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setShow3d(false), 150);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    };
+  }, []);
+
   return (
     <section
-      className="glass-card relative w-full rounded-lg p-5 shadow-card sm:p-6"
+      className="glass-card relative w-full overflow-visible rounded-lg p-5 shadow-card sm:p-6"
       aria-label={`Perfil de ${displayName}`}
+      onMouseEnter={open3d}
+      onMouseLeave={close3d}
     >
       <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-glow/60 to-transparent" />
 
@@ -230,6 +272,13 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
           <div className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
             <BadgeCheck className="h-3.5 w-3.5 text-primary-foreground" />
           </div>
+
+          {show3d ? (
+            <Avatar3DPreview
+              userId={creator.robloxUserId}
+              username={creator.robloxUsername}
+            />
+          ) : null}
         </div>
       </div>
 
@@ -346,7 +395,7 @@ function Index() {
         </p>
       </section>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 md:gap-5 xl:gap-6">
+      <div className="grid gap-5 overflow-visible md:grid-cols-2 xl:grid-cols-4 md:gap-5 xl:gap-6">
         {CREATORS.map((creator) => (
           <ProfileCard key={creator.id} creator={creator} />
         ))}
