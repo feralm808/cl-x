@@ -10,7 +10,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { Gamepad2, Home, UsersRound } from "lucide-react";
+import { Home, UsersRound } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -130,7 +130,7 @@ function RootShell({ children }: { children: ReactNode }) {
 const NAV_ITEMS = [
   { to: "/", label: "Inicio", icon: Home, exact: true },
   { to: "/groups", label: "Grupos", icon: UsersRound, exact: false },
-  { to: "/games", label: "Juegos", icon: Gamepad2, exact: false },
+  // Juegos desactivado por ahora — reactivar añadiendo la entrada de /games aquí
 ] as const;
 
 function MainNav() {
