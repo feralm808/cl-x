@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Code2, Clapperboard, Users } from "lucide-react";
 import { getRobloxAvatar } from "@/lib/roblox.functions";
@@ -49,6 +50,17 @@ function DiscordIcon({ className }: { className?: string }) {
   );
 }
 
+const AVATAR_CACHE_KEY = "cl6zy-last-avatar";
+
+function getCachedAvatar(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(AVATAR_CACHE_KEY);
+  } catch {
+    return null;
+  }
+}
+
 function Index() {
   // Avatar de Roblox en vivo: se actualiza automáticamente cada 15 minutos
   const { data: avatar } = useQuery({
@@ -57,7 +69,19 @@ function Index() {
     refetchInterval: 15 * 60 * 1000,
     staleTime: 15 * 60 * 1000,
   });
-  const avatarSrc = avatar?.imageUrl ?? avatarImg;
+
+  // Guarda la última foto que cargó bien para usarla de respaldo
+  useEffect(() => {
+    if (avatar?.imageUrl) {
+      try {
+        window.localStorage.setItem(AVATAR_CACHE_KEY, avatar.imageUrl);
+      } catch {
+        /* almacenamiento no disponible */
+      }
+    }
+  }, [avatar?.imageUrl]);
+
+  const avatarSrc = avatar?.imageUrl ?? getCachedAvatar() ?? avatarImg;
 
   // Seguidores de TikTok automáticos: se actualizan cada 24 horas
   const { data: tiktok } = useQuery({
