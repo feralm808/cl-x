@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Code2, Clapperboard, Users } from "lucide-react";
 import { getRobloxAvatar } from "@/lib/roblox.functions";
+import { getTikTokFollowers } from "@/lib/tiktok.functions";
 import avatarImg from "@/assets/avatar.png";
 
 export const Route = createFileRoute("/")({
@@ -57,6 +58,15 @@ function Index() {
     staleTime: 15 * 60 * 1000,
   });
   const avatarSrc = avatar?.imageUrl ?? avatarImg;
+
+  // Seguidores de TikTok automáticos: se actualizan cada 24 horas
+  const { data: tiktok } = useQuery({
+    queryKey: ["tiktok-followers", "claasix"],
+    queryFn: () => getTikTokFollowers({ data: { username: "claasix" } }),
+    refetchInterval: 24 * 60 * 60 * 1000,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+  const followerCount = tiktok?.followers ?? FOLLOWER_COUNT;
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12 font-sans text-foreground">
@@ -132,7 +142,7 @@ function Index() {
                 Seguidores totales
               </p>
               <p className="mt-1 font-display text-3xl font-bold tabular-nums text-foreground">
-                {FOLLOWER_COUNT.toLocaleString("en-US")}
+                {followerCount.toLocaleString("en-US")}
               </p>
             </div>
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-glow/20 to-violet-glow/20 text-glow">
