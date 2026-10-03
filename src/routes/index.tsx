@@ -32,6 +32,7 @@ const FOLLOWER_FALLBACKS: Record<string, number> = {
   mazzi1nky: 0,
   cwtusagi: 0,
   thevicman12: 0,
+  notacoolnerd: 0,
 };
 
 type CreatorProfile = {
@@ -91,6 +92,17 @@ const CREATORS: CreatorProfile[] = [
     discordHandle: "Unirse",
     discordUrl: "https://discord.gg/pzcY7eee5w",
     role: "Creador de Contenido",
+    tags: ["Contenido"],
+  },
+  {
+    id: "notacoolnerd",
+    displayName: "notacoolnerd",
+    robloxUserId: "2567193821",
+    robloxUsername: "notacoolnerd",
+    bio: "Creadora de contenido de Roblox.",
+    tiktokUsername: "notacoolnerd",
+    discordHandle: "",
+    role: "Creadora de Contenido",
     tags: ["Contenido"],
   },
 ];
