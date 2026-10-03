@@ -9,6 +9,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Gamepad2, Home, UsersRound } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -130,8 +131,34 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="relative min-h-screen overflow-hidden bg-background font-sans text-foreground">
+        <div className="pointer-events-none fixed -left-48 -top-48 h-[34rem] w-[34rem] animate-blob rounded-full bg-violet-glow/20 blur-[130px]" />
+        <div className="pointer-events-none fixed -bottom-48 -right-48 h-[34rem] w-[34rem] animate-blob-slow rounded-full bg-glow/15 blur-[130px]" />
+
+        <header className="relative z-20 px-4 pt-5 sm:px-6 sm:pt-7">
+          <nav
+            aria-label="Navegación principal"
+            className="glass-nav mx-auto flex w-fit items-center gap-1 rounded-lg p-1.5"
+          >
+            <Link to="/" activeOptions={{ exact: true }} className="nav-link">
+              <Home className="h-4 w-4" />
+              <span>Inicio</span>
+            </Link>
+            <Link to="/groups" className="nav-link">
+              <UsersRound className="h-4 w-4" />
+              <span>Grupos</span>
+            </Link>
+            <Link to="/games" className="nav-link">
+              <Gamepad2 className="h-4 w-4" />
+              <span>Juegos</span>
+            </Link>
+          </nav>
+        </header>
+
+        <div className="relative z-10">
+          <Outlet />
+        </div>
+      </div>
     </QueryClientProvider>
   );
 }

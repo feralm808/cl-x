@@ -1,24 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BadgeCheck, Sparkles, Gamepad2, Code2, Clapperboard, Users } from "lucide-react";
+import { BadgeCheck, Sparkles, Gamepad2, Clapperboard, Users } from "lucide-react";
 import { getRobloxAvatar } from "@/lib/roblox.functions";
 import { getTikTokFollowers } from "@/lib/tiktok.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "cl6zy · Perfil de Creador Roblox" },
+      { title: "Inicio · CL-X Comunidad Roblox" },
       {
         name: "description",
         content:
-          "Perfil oficial de cl6zy — desarrollador de experiencias en Roblox, programador en Luau y creador de contenido.",
+          "Bienvenido a CL-X, una comunidad unida de creadores de contenido de Roblox.",
       },
-      { property: "og:title", content: "cl6zy · Perfil de Creador Roblox" },
+      { property: "og:title", content: "Inicio · CL-X Comunidad Roblox" },
       {
         property: "og:description",
         content:
-          "Desarrollador de experiencias en Roblox, programador en Luau y creador de contenido.",
+          "Una comunidad unida de creadores de contenido de Roblox.",
       },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -105,14 +105,19 @@ function Index() {
   const followerCount = tiktok?.followers ?? FOLLOWER_COUNT;
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12 font-sans text-foreground">
-      {/* Fondo: halos de luz */}
-      <div className="pointer-events-none absolute -left-48 -top-48 h-[34rem] w-[34rem] animate-blob rounded-full bg-violet-glow/25 blur-[130px]" />
-      <div className="pointer-events-none absolute -bottom-48 -right-48 h-[34rem] w-[34rem] animate-blob-slow rounded-full bg-glow/20 blur-[130px]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[22rem] w-[22rem] -translate-x-1/2 rounded-full bg-cyan-glow/10 blur-[120px]" />
+    <main className="page-shell grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_28rem] lg:gap-20">
+      <section>
+        <p className="section-kicker">Bienvenido a CL-X</p>
+        <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[1.08] text-foreground sm:text-6xl">
+          Una comunidad unida de creadores de contenido de Roblox
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+          Compartimos ideas, creamos experiencias y crecemos juntos dentro del mundo de Roblox.
+        </p>
+      </section>
 
       {/* Tarjeta de perfil */}
-      <main className="glass-card relative z-10 w-full max-w-md rounded-4xl p-8 shadow-card">
+      <section className="glass-card relative w-full rounded-lg p-7 shadow-card sm:p-8" aria-label="Perfil de Classix">
         {/* Línea superior de brillo */}
         <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-glow/60 to-transparent" />
 
@@ -164,14 +169,8 @@ function Index() {
           Desarrollador de experiencias en Roblox, programador en Luau y creador de contenido.
         </p>
 
-        {/* Etiquetas de habilidades */}
+        {/* Categoría del creador */}
         <div className="mt-5 flex flex-wrap justify-center gap-2">
-          <span className="chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium">
-            <Code2 className="h-3.5 w-3.5 text-violet-glow" /> Luau
-          </span>
-          <span className="chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium">
-            <Gamepad2 className="h-3.5 w-3.5 text-glow" /> Roblox Studio
-          </span>
           <span className="chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium">
             <Clapperboard className="h-3.5 w-3.5 text-cyan-glow" /> Contenido
           </span>
@@ -214,7 +213,7 @@ function Index() {
             <span className="text-muted-foreground">@cl6zy</span>
           </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
