@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight, ImageIcon, Users } from "lucide-react";
 import { getRobloxGroups } from "@/lib/roblox-groups.functions";
 
-const GROUP_IDS = [70474731];
+const GROUP_IDS = [70474731, 606502980, 35971654];
 const GROUP_REFRESH_INTERVAL = 15 * 60 * 1000;
 
 const groupsQueryOptions = () =>

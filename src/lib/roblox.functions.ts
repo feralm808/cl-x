@@ -1,10 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 
-const ROBLOX_USER_ID = "5321645648";
-
-export const getRobloxAvatar = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${ROBLOX_USER_ID}&size=352x352&format=Png&isCircular=true`;
+export const getRobloxAvatar = createServerFn({ method: "GET" })
+  .inputValidator((data) =>
+    z.object({ userId: z.string().regex(/^\d+$/) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${data.userId}&size=352x352&format=Png&isCircular=true`;
     for (let i = 0; i < 3; i++) {
       try {
         const res = await fetch(url, {
@@ -15,7 +17,8 @@ export const getRobloxAvatar = createServerFn({ method: "GET" }).handler(
             data?: Array<{ imageUrl?: string; state?: string }>;
           };
           const item = json.data?.[0];
-          if (item?.state === "Completed" && item.imageUrl) return { imageUrl: item.imageUrl };
+          if (item?.state === "Completed" && item.imageUrl)
+            return { imageUrl: item.imageUrl };
         }
       } catch {
         /* reintenta */
@@ -23,5 +26,4 @@ export const getRobloxAvatar = createServerFn({ method: "GET" }).handler(
       await new Promise((r) => setTimeout(r, 800 * (i + 1)));
     }
     return { imageUrl: null as string | null };
-  },
-);
+  });
