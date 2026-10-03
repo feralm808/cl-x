@@ -27,9 +27,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/* ============================================================
-   ⭐ EDITA AQUÍ — Valores de respaldo de seguidores (sin comas)
-   ============================================================ */
 const FOLLOWER_FALLBACKS: Record<string, number> = {
   claasix: 12500,
   mazzi1nky: 0,
@@ -84,7 +81,6 @@ const CREATORS: CreatorProfile[] = [
   },
 ];
 
-/* Iconos de marcas (no existen en lucide-react) */
 function TikTokIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -255,25 +251,29 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-2 gap-2.5">
         <a
           href={`https://www.tiktok.com/@${creator.tiktokUsername}`}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-social group"
         >
-          <TikTokIcon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-          <span className="font-medium">TikTok</span>
-          <span className="text-muted-foreground">@{creator.tiktokUsername}</span>
+          <TikTokIcon className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+          <span className="btn-social-text">
+            <span className="btn-social-label">TikTok</span>
+            <span className="btn-social-handle">@{creator.tiktokUsername}</span>
+          </span>
         </a>
 
         <div
           className="btn-social cursor-default select-text"
           aria-label={`Discord: ${creator.discordHandle}`}
         >
-          <DiscordIcon className="h-5 w-5 text-[#8b93a7]" />
-          <span className="font-medium">Discord</span>
-          <span className="text-muted-foreground">{creator.discordHandle}</span>
+          <DiscordIcon className="h-4 w-4 shrink-0 text-[#8b93a7]" />
+          <span className="btn-social-text">
+            <span className="btn-social-label">Discord</span>
+            <span className="btn-social-handle">{creator.discordHandle}</span>
+          </span>
         </div>
       </div>
     </section>
