@@ -157,8 +157,10 @@ function RootComponent() {
           </nav>
         </header>
 
-        <div key={pathname} className="relative z-10 animate-page-enter">
-          <Outlet />
+        <div className="page-stage relative z-10">
+          <div key={pathname} className="animate-page-enter">
+            <Outlet />
+          </div>
         </div>
       </div>
     </QueryClientProvider>

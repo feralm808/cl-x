@@ -38,7 +38,6 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Tokens propios del diseño */
   --color-surface: var(--surface);
   --color-edge: var(--edge);
   --color-glow: var(--glow);
@@ -52,7 +51,6 @@
 :root {
   --radius: 1rem;
 
-  /* Fondo principal #060913 */
   --background: oklch(0.155 0.028 265);
   --foreground: oklch(0.955 0.008 250);
   --card: oklch(0.21 0.034 264.665);
@@ -73,11 +71,9 @@
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.623 0.214 259.815);
 
-  /* Superficies glassmorphism: #111827 / #1f2937 translúcidos */
   --surface: oklch(0.21 0.034 264.665 / 55%);
   --edge: oklch(1 0 0 / 10%);
 
-  /* Acentos de brillo: azul / violeta / celeste */
   --glow: oklch(0.623 0.214 259.815);
   --violet-glow: oklch(0.606 0.25 292.717);
   --cyan-glow: oklch(0.789 0.154 211.53);
@@ -94,8 +90,6 @@
     -webkit-font-smoothing: antialiased;
   }
 }
-
-/* ---------- Componentes del sistema de diseño ---------- */
 
 @utility glass-card {
   background: linear-gradient(
@@ -277,23 +271,39 @@
   animation: blob-float 20s ease-in-out infinite reverse;
 }
 
-@keyframes page-enter {
-  from {
+@keyframes page-enter-3d {
+  0% {
     opacity: 0;
-    transform: translateY(14px);
+    filter: blur(8px);
+    transform: perspective(1200px) translateY(28px) rotateX(12deg) scale(0.94);
   }
-  to {
+  55% {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
   }
 }
 
+@utility page-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 20%;
+  transform-style: preserve-3d;
+}
+
 @utility animate-page-enter {
-  animation: page-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
+  animation: page-enter-3d 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-page-enter {
     animation: none;
+    filter: none;
   }
 }
