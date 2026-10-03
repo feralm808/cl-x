@@ -31,6 +31,7 @@ const FOLLOWER_FALLBACKS: Record<string, number> = {
   claasix: 12500,
   mazzi1nky: 0,
   cwtusagi: 0,
+  thevicman12: 0,
 };
 
 type CreatorProfile = {
@@ -41,6 +42,7 @@ type CreatorProfile = {
   bio: string;
   tiktokUsername: string;
   discordHandle: string;
+  discordUrl?: string;
   role: string;
   tags: string[];
 };
@@ -78,6 +80,18 @@ const CREATORS: CreatorProfile[] = [
     discordHandle: "",
     role: "Creadora de Contenido",
     tags: ["Contenido", "Creadora de Outfits"],
+  },
+  {
+    id: "vicman",
+    displayName: "Vicman",
+    robloxUserId: "2210102060",
+    robloxUsername: "dmenicto2",
+    bio: "Creador de contenido de Roblox.",
+    tiktokUsername: "thevicman12",
+    discordHandle: "Unirse",
+    discordUrl: "https://discord.gg/pzcY7eee5w",
+    role: "Creador de Contenido",
+    tags: ["Contenido"],
   },
 ];
 
@@ -160,8 +174,9 @@ function useTikTokFollowers(username: string) {
   const { data: tiktok } = useQuery({
     queryKey: ["tiktok-followers", username],
     queryFn: () => getTikTokFollowers({ data: { username } }),
-    refetchInterval: 24 * 60 * 60 * 1000,
-    staleTime: 24 * 60 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: true,
   });
 
   const fallback = FOLLOWER_FALLBACKS[username] ?? 0;
@@ -286,16 +301,32 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
         </a>
 
         {creator.discordHandle ? (
-          <div
-            className="btn-social cursor-default select-text"
-            aria-label={`Discord: ${creator.discordHandle}`}
-          >
-            <DiscordIcon className="h-4 w-4 shrink-0 text-[#8b93a7]" />
-            <span className="btn-social-text">
-              <span className="btn-social-label">Discord</span>
-              <span className="btn-social-handle">{creator.discordHandle}</span>
-            </span>
-          </div>
+          creator.discordUrl ? (
+            <a
+              href={creator.discordUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-social group"
+              aria-label={`Unirse al Discord de ${creator.displayName}`}
+            >
+              <DiscordIcon className="h-4 w-4 shrink-0 text-[#5865F2] transition-transform duration-300 group-hover:scale-110" />
+              <span className="btn-social-text">
+                <span className="btn-social-label">Discord</span>
+                <span className="btn-social-handle">{creator.discordHandle}</span>
+              </span>
+            </a>
+          ) : (
+            <div
+              className="btn-social cursor-default select-text"
+              aria-label={`Discord: ${creator.discordHandle}`}
+            >
+              <DiscordIcon className="h-4 w-4 shrink-0 text-[#8b93a7]" />
+              <span className="btn-social-text">
+                <span className="btn-social-label">Discord</span>
+                <span className="btn-social-handle">{creator.discordHandle}</span>
+              </span>
+            </div>
+          )
         ) : null}
       </div>
     </section>
@@ -315,7 +346,7 @@ function Index() {
         </p>
       </section>
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 md:gap-5 xl:gap-6">
         {CREATORS.map((creator) => (
           <ProfileCard key={creator.id} creator={creator} />
         ))}
