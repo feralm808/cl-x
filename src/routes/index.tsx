@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Code2, Clapperboard, Users } from "lucide-react";
 import { getRobloxAvatar } from "@/lib/roblox.functions";
 import { getTikTokFollowers } from "@/lib/tiktok.functions";
-import avatarImg from "@/assets/avatar.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
