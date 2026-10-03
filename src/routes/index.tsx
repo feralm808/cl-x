@@ -49,6 +49,15 @@ function DiscordIcon({ className }: { className?: string }) {
 }
 
 function Index() {
+  // Avatar de Roblox en vivo: se actualiza automáticamente cada 15 minutos
+  const { data: avatar } = useQuery({
+    queryKey: ["roblox-avatar"],
+    queryFn: () => getRobloxAvatar(),
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 15 * 60 * 1000,
+  });
+  const avatarSrc = avatar?.imageUrl ?? avatarImg;
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12 font-sans text-foreground">
       {/* Fondo: halos de luz */}
