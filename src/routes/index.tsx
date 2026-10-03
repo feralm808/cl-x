@@ -33,6 +33,7 @@ export const Route = createFileRoute("/")({
 const FOLLOWER_FALLBACKS: Record<string, number> = {
   claasix: 12500,
   mazzi1nky: 0,
+  cwtusagi: 0,
 };
 
 type CreatorProfile = {
@@ -44,6 +45,7 @@ type CreatorProfile = {
   tiktokUsername: string;
   discordHandle: string;
   role: string;
+  tags: string[];
 };
 
 const CREATORS: CreatorProfile[] = [
@@ -52,10 +54,11 @@ const CREATORS: CreatorProfile[] = [
     displayName: "classix",
     robloxUserId: "5321645648",
     robloxUsername: "cl6zy",
-    bio: "Desarrollador de experiencias en Roblox, programador en Luau y creador de contenido.",
+    bio: "Desarrollador de experiencias en Roblox y creador de contenido.",
     tiktokUsername: "claasix",
     discordHandle: "@cl6zy",
     role: "Creador de Contenido",
+    tags: ["Contenido"],
   },
   {
     id: "mazzi",
@@ -66,6 +69,18 @@ const CREATORS: CreatorProfile[] = [
     tiktokUsername: "mazzi1nky",
     discordHandle: "@mazzi1nky",
     role: "Creador de Contenido",
+    tags: ["Contenido"],
+  },
+  {
+    id: "usagi",
+    displayName: "Usagi",
+    robloxUserId: "2561103592",
+    robloxUsername: "cwtusagi",
+    bio: "Creadora de contenido y outfits de Roblox.",
+    tiktokUsername: "cwtusagi",
+    discordHandle: "@cwtusagi",
+    role: "Creadora de Contenido",
+    tags: ["Contenido", "Creadora de Outfits"],
   },
 ];
 
@@ -214,9 +229,14 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
       </p>
 
       <div className="mt-5 flex flex-wrap justify-center gap-2">
-        <span className="chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium">
-          <Clapperboard className="h-3.5 w-3.5 text-cyan-glow" /> Contenido
-        </span>
+        {creator.tags.map((tag) => (
+          <span
+            key={tag}
+            className="chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+          >
+            <Clapperboard className="h-3.5 w-3.5 text-cyan-glow" /> {tag}
+          </span>
+        ))}
       </div>
 
       <div className="mt-7 rounded-3xl border border-edge bg-surface/60 p-5 backdrop-blur-sm">
@@ -273,7 +293,7 @@ function Index() {
         </p>
       </section>
 
-      <div className="grid gap-8 md:grid-cols-2 md:gap-6 xl:gap-8">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-6 xl:gap-8">
         {CREATORS.map((creator) => (
           <ProfileCard key={creator.id} creator={creator} />
         ))}
