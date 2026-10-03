@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Clapperboard, Users } from "lucide-react";
-import { getRobloxAvatar } from "@/lib/roblox.functions";
+import { getRobloxAvatar, getRobloxUser } from "@/lib/roblox.functions";
 import { getTikTokFollowers } from "@/lib/tiktok.functions";
 
 export const Route = createFileRoute("/")({
@@ -141,6 +141,21 @@ function useRobloxAvatar(userId: string) {
   return { avatarSrc, cachedAvatar, setBroken };
 }
 
+function useRobloxDisplayName(userId: string, fallback: string) {
+  const { data } = useQuery({
+    queryKey: ["roblox-user", userId],
+    queryFn: async () => {
+      const r = await getRobloxUser({ data: { userId } });
+      return r;
+    },
+    retry: 3,
+    staleTime: 15 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000,
+  });
+
+  return data?.displayName?.trim() || fallback;
+}
+
 function useTikTokFollowers(username: string) {
   const { data: tiktok } = useQuery({
     queryKey: ["tiktok-followers", username],
@@ -155,13 +170,14 @@ function useTikTokFollowers(username: string) {
 
 function ProfileCard({ creator }: { creator: CreatorProfile }) {
   const { avatarSrc, cachedAvatar, setBroken } = useRobloxAvatar(creator.robloxUserId);
+  const displayName = useRobloxDisplayName(creator.robloxUserId, creator.displayName);
   const followerCount = useTikTokFollowers(creator.tiktokUsername);
   const robloxProfileUrl = `https://www.roblox.com/users/${creator.robloxUserId}/profile`;
 
   return (
     <section
       className="glass-card relative w-full rounded-lg p-5 shadow-card sm:p-6"
-      aria-label={`Perfil de ${creator.displayName}`}
+      aria-label={`Perfil de ${displayName}`}
     >
       <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-glow/60 to-transparent" />
 
@@ -204,7 +220,7 @@ function ProfileCard({ creator }: { creator: CreatorProfile }) {
 
       <div className="mt-3 text-center">
         <h2 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          {creator.displayName}
+          {displayName}
         </h2>
         <p className="mt-1.5 inline-flex items-center gap-2 text-sm text-muted-foreground">
           <Gamepad2 className="h-4 w-4 text-glow" />

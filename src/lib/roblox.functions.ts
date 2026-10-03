@@ -27,3 +27,26 @@ export const getRobloxAvatar = createServerFn({ method: "GET" })
     }
     return { imageUrl: null as string | null };
   });
+
+export const getRobloxUser = createServerFn({ method: "GET" })
+  .inputValidator((data) =>
+    z.object({ userId: z.string().regex(/^\d+$/) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    try {
+      const res = await fetch(`https://users.roblox.com/v1/users/${data.userId}`, {
+        headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0" },
+      });
+      if (!res.ok) return { displayName: null as string | null, username: null as string | null };
+      const json = (await res.json()) as {
+        displayName?: string;
+        name?: string;
+      };
+      return {
+        displayName: json.displayName ?? null,
+        username: json.name ?? null,
+      };
+    } catch {
+      return { displayName: null as string | null, username: null as string | null };
+    }
+  });
