@@ -79,15 +79,16 @@
     border-color: var(--color-border);
   }
 
-  html {
-    overflow-x: hidden;
+  /* clip evita la barra fantasma (hidden fuerza overflow-y: auto) */
+  html,
+  body {
+    overflow-x: clip;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
   }
 }
 
@@ -286,8 +287,6 @@
   perspective: 1400px;
   perspective-origin: 50% 0%;
   transform-style: preserve-3d;
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 @utility animate-page-enter {

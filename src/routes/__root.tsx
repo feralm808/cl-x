@@ -133,7 +133,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="relative min-h-screen overflow-x-hidden bg-background font-sans text-foreground">
+      <div className="relative min-h-screen bg-background font-sans text-foreground">
         <div className="pointer-events-none fixed -left-48 -top-48 h-[34rem] w-[34rem] animate-blob rounded-full bg-violet-glow/20 blur-[130px]" />
         <div className="pointer-events-none fixed -bottom-48 -right-48 h-[34rem] w-[34rem] animate-blob-slow rounded-full bg-glow/15 blur-[130px]" />
 
