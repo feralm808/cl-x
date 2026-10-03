@@ -9,7 +9,7 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Gamepad2, Home, UsersRound } from "lucide-react";
 
 import appCss from "../styles.css?url";
@@ -127,6 +127,80 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const NAV_ITEMS = [
+  { to: "/", label: "Inicio", icon: Home, exact: true },
+  { to: "/groups", label: "Grupos", icon: UsersRound, exact: false },
+  { to: "/games", label: "Juegos", icon: Gamepad2, exact: false },
+] as const;
+
+function MainNav() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navRef = useRef<HTMLElement>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+
+  const activeIndex = NAV_ITEMS.findIndex((item) =>
+    item.exact ? pathname === item.to : pathname.startsWith(item.to)
+  );
+
+  const updateIndicator = () => {
+    const nav = navRef.current;
+    if (!nav || activeIndex < 0) return;
+    const el = nav.querySelector<HTMLElement>(`[data-nav-index="${activeIndex}"]`);
+    if (!el) return;
+    const navRect = nav.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    setIndicator({
+      left: elRect.left - navRect.left,
+      width: elRect.width,
+      ready: true,
+    });
+  };
+
+  useLayoutEffect(() => {
+    updateIndicator();
+  }, [activeIndex, pathname]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [activeIndex]);
+
+  return (
+    <nav
+      ref={navRef}
+      aria-label="Navegación principal"
+      className="glass-nav relative mx-auto flex w-fit items-center gap-1 rounded-lg p-1.5"
+    >
+      <div
+        className="nav-indicator pointer-events-none absolute top-1.5 bottom-1.5 rounded-md"
+        style={{
+          left: indicator.left,
+          width: indicator.width,
+          opacity: indicator.ready ? 1 : 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {NAV_ITEMS.map((item, i) => {
+        const Icon = item.icon;
+        const isActive = i === activeIndex;
+        return (
+          <Link
+            key={item.to}
+            to={item.to}
+            activeOptions={item.exact ? { exact: true } : undefined}
+            data-nav-index={i}
+            className={`nav-link relative z-10 ${isActive ? "nav-link-active" : ""}`}
+          >
+            <Icon className="h-4 w-4" />
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -138,23 +212,7 @@ function RootComponent() {
         <div className="pointer-events-none fixed -bottom-48 -right-48 h-[34rem] w-[34rem] animate-blob-slow rounded-full bg-glow/15 blur-[130px]" />
 
         <header className="relative z-20 px-4 pt-5 sm:px-6 sm:pt-7">
-          <nav
-            aria-label="Navegación principal"
-            className="glass-nav mx-auto flex w-fit items-center gap-1 rounded-lg p-1.5"
-          >
-            <Link to="/" activeOptions={{ exact: true }} className="nav-link">
-              <Home className="h-4 w-4" />
-              <span>Inicio</span>
-            </Link>
-            <Link to="/groups" className="nav-link">
-              <UsersRound className="h-4 w-4" />
-              <span>Grupos</span>
-            </Link>
-            <Link to="/games" className="nav-link">
-              <Gamepad2 className="h-4 w-4" />
-              <span>Juegos</span>
-            </Link>
-          </nav>
+          <MainNav />
         </header>
 
         <div className="page-stage relative z-10">

@@ -79,7 +79,6 @@
     border-color: var(--color-border);
   }
 
-  /* clip evita la barra fantasma (hidden fuerza overflow-y: auto) */
   html,
   body {
     overflow-x: clip;
@@ -131,6 +130,15 @@
   box-shadow: 0 14px 40px -24px oklch(0 0 0 / 80%);
 }
 
+@utility nav-indicator {
+  background: oklch(0.623 0.214 259.815 / 18%);
+  box-shadow: inset 0 0 0 1px oklch(0.623 0.214 259.815 / 24%);
+  transition:
+    left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
 @utility nav-link {
   display: inline-flex;
   height: 2.5rem;
@@ -142,17 +150,18 @@
   color: var(--color-muted-foreground);
   font-size: 0.875rem;
   font-weight: 600;
-  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: color 0.25s ease;
+  background: transparent;
 
   &:hover {
     color: var(--color-foreground);
-    background: oklch(1 0 0 / 6%);
   }
 
-  &[data-status="active"] {
+  &[data-status="active"],
+  &.nav-link-active {
     color: var(--color-foreground);
-    background: oklch(0.623 0.214 259.815 / 18%);
-    box-shadow: inset 0 0 0 1px oklch(0.623 0.214 259.815 / 24%);
+    background: transparent;
+    box-shadow: none;
   }
 }
 
@@ -298,5 +307,9 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-page-enter {
     animation: none;
+  }
+
+  .nav-indicator {
+    transition: none;
   }
 }
