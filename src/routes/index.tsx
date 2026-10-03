@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Sparkles, Gamepad2, Code2, Clapperboard, Users } from "lucide-react";
+import { getRobloxAvatar } from "@/lib/roblox.functions";
 import avatarImg from "@/assets/avatar.png";
 
 export const Route = createFileRoute("/")({
@@ -47,6 +49,15 @@ function DiscordIcon({ className }: { className?: string }) {
 }
 
 function Index() {
+  // Avatar de Roblox en vivo: se actualiza automáticamente cada 15 minutos
+  const { data: avatar } = useQuery({
+    queryKey: ["roblox-avatar"],
+    queryFn: () => getRobloxAvatar(),
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 15 * 60 * 1000,
+  });
+  const avatarSrc = avatar?.imageUrl ?? avatarImg;
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12 font-sans text-foreground">
       {/* Fondo: halos de luz */}
@@ -73,9 +84,9 @@ function Index() {
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-glow via-glow to-cyan-glow opacity-70 blur-md" />
             <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface">
               <img
-                src={avatarImg}
-                alt="Avatar de cl6zy"
-                className="h-full w-full scale-110 object-cover object-top"
+                src={avatarSrc}
+                alt="Avatar de Roblox de cl6zy"
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-glow to-violet-glow shadow-glow-sm">
