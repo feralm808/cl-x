@@ -64,7 +64,7 @@ const CREATORS: CreatorProfile[] = [
     displayName: "Mazzi",
     robloxUserId: "4999897326",
     robloxUsername: "maxplis123",
-    bio: "Creador de contenido de Roblox, creciendo cada dia mas",
+    bio: "Creador de contenido de Roblox, creciendo cada dia mas.",
     tiktokUsername: "mazzi1nky",
     discordHandle: "",
     role: "Creador de Contenido",
